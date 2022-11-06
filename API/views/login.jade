@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  
+  form(id='loginForm')
+
+    h1 Login Form
+
+    p Username
+    input(name='username')
+
+    p Password
+    input(name='password', type='password')
+
+  button(onclick='login()') Submit
+
+
+
+  div
+    a(href='/newUser') Create New User
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+  script.
+    async function login() {
+
+      const form = document.getElementById('loginForm');
+      const formData = new FormData(form);
+
+      const payload = {}
+
+      for (const [key, value] of formData) {
+        payload[key] = value
+        }
+        
+      result = await axios.post('./users/login', payload)
+
+      document.body.innerHTML = result.data;
+    }
+
+
+  

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  
+  h1 Delete Current User
+
+    
+
+
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+  script.
+    async function deleteUser() {
+
+      result = await axios.delete('./users');
+
+      document.body.innerHTML = result.data
+    }
+
+
+  
+  button(onclick='deleteUser()') Confirm Delete User

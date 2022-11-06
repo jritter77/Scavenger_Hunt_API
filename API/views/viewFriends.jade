@@ -1,0 +1,52 @@
+extends layout
+
+block content
+    h2 Friends
+    ul(id='friends')
+
+    h2 Friend Requests
+    ul(id='friendRequests')
+
+
+
+
+
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+    script.
+        async function populateFriends() {
+
+            console.log('here')
+            let friendsCont = document.getElementById('friends');
+            let friendReqsCont = document.getElementById('friendRequests');
+
+            let friends = await axios.get('./friends');
+
+            console.log(friends)
+
+            for (let f of friends.data.friends) {
+                let entry = document.createElement('li');
+                entry.innerText = f.username;
+                friendsCont.append(entry);
+            }
+
+            for (let f of friends.data.friendRequests) {
+                let entry = document.createElement('li');
+                let sender = document.createElement('p');
+                let approveBtn = document.createElement('button');
+
+                sender.innerText = f.username;
+                approveBtn.innerText = 'Approve';
+                
+                entry.append(sender);
+                entry.append(approveBtn);
+
+                friendReqsCont.append(entry);
+            }
+        }
+
+        console.log('here')
+
+        populateFriends();
+    

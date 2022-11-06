@@ -1,0 +1,96 @@
+extends layout
+
+block content
+  
+  form(id='newHuntForm')
+
+    h1 New Hunt Form
+
+    p Title
+    input(name='title')
+
+    p Description
+    textarea(name="description", cols="30", rows="10")
+
+    p Clue List
+    
+    div
+      span Clue 1:
+      input(name='clue1[]')
+      span Answer 1:
+      input(name='clue1[]')
+      span Type 1:
+      select(name="clue1[]")
+        option(value='text') Text
+        option(value='checkbox') Checkbox
+        option(value='image') Image
+
+    div
+      span Clue 2:
+      input(name='clue2[]')
+      span Answer 2:
+      input(name='clue2[]')
+      span Type 2:
+      select(name="clue2[]")
+        option(value='text') Text
+        option(value='checkbox') Checkbox
+        option(value='image') Image
+
+    div
+      span Clue 3:
+      input(name='clue3[]')
+      span Answer 3:
+      input(name='clue3[]')
+      span Type 3:
+      select(name="clue3[]")
+        option(value='text') Text
+        option(value='checkbox') Checkbox
+        option(value='image') Image
+
+
+
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+  script.
+    async function newHunt() {
+
+      const form = document.getElementById('newHuntForm');
+      const formData = new FormData(form);
+
+
+      const payload = {clueList: []};
+
+      let clueList = {};
+
+      for (const [key, value] of formData) {
+
+        if (key.includes('[]')) {
+          let k = key.replace('[]', '');
+
+          if (clueList[k] !== undefined) {
+            clueList[k].push(value);
+          }
+          else {
+            clueList[k] = [value];
+          }
+        }
+        else {
+          payload[key] = value;
+
+        }
+      }
+
+      for (let c in clueList) {
+        payload.clueList.push({clue: clueList[c][0], answer: clueList[c][1], type: clueList[c][2]});
+      }
+
+      
+      result = await axios.post('./hunts', payload)
+
+      document.body.innerHTML = result.data
+    }
+
+
+  
+  button(onclick='newHunt()') Submit

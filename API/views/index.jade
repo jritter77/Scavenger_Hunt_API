@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  h2 Users
+  ul
+    li
+      a(href='/editUser') Edit Current User
+    li
+      a(href='/deleteUser') Delete Current User
+
+  h2 Hunts 
+  ul 
+    li
+      a(href='/newHunt') Create New Hunt
+
+
+  h2 Friends
+  ul
+    li 
+      a(href='/addFriend') Send New Friend Request
+
+  
+
+
+  
+

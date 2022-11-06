@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  
+  form(id='newUserForm')
+
+    h1 New User Form
+
+    p Username
+    input(name='username')
+
+    p Password
+    input(name='password', type='password')
+
+    p Confirm Password
+    input(name='confirmPass', type='password')
+
+    p(id='feedback', style={color: 'red'})
+
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+  script.
+    async function newUser() {
+
+      const form = document.getElementById('newUserForm');
+      const formData = new FormData(form);
+
+      if (formData.get('password') === formData.get('confirmPass')) {
+        const payload = {}
+
+        for (const [key, value] of formData) {
+          payload[key] = value
+        }
+          
+        result = await axios.post('./users', payload);
+
+        document.body.innerHTML = result.data;
+      }
+      else {
+        document.getElementById('feedback').innerHTML = 'Passwords Do Not Match';
+      }
+
+      
+    }
+
+
+  
+  button(onclick='newUser()') Submit

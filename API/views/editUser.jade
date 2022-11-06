@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  
+  form(id='editUserForm')
+    h1 Edit Current User
+
+    p New Username
+    input(name='username')
+
+    p New Password
+    input(name='password', type='password')
+
+    p Confirm New Password 
+    input(name='confirmPass', type='password')
+
+
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js")
+  
+  script.
+    async function editUser() {
+
+      const form = document.getElementById('editUserForm');
+      const formData = new FormData(form);
+
+      const payload = {attr: {}}
+
+      for (const [key, value] of formData) {
+            payload.attr[key] = value
+        }
+      
+
+      result = await axios.put('./users', payload)
+
+      document.body.innerHTML = result.data
+    }
+
+
+  
+  button(onclick='editUser()') Submit
