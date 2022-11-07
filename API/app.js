@@ -5,8 +5,8 @@ let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 let jwt = require("jsonwebtoken");
 let dotenv = require("dotenv");
-let mongoose = require('mongoose');
-let cors = require('cors');
+let mongoose = require("mongoose");
+let cors = require("cors");
 
 let indexRouter = require("./routes/index");
 let usersRouter = require("./routes/users");
@@ -18,7 +18,7 @@ let app = express();
 
 dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/LookoutDB");
+mongoose.connect("mongodb://127.0.0.1/LookoutDB");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
