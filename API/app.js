@@ -4,7 +4,7 @@ let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 let jwt = require("jsonwebtoken");
-let dotenv = require("dotenv").config();
+let dotenv = require("dotenv");
 let mongoose = require("mongoose");
 let cors = require("cors");
 
