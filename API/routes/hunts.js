@@ -12,6 +12,7 @@ router.get("/", ensureToken, async function (req, res, next) {
 
     const found = await Hunt.find(searchTerm, {
       author: 1,
+      authorId: 1,
       title: 1,
       description: 1,
       ratings: 1,
