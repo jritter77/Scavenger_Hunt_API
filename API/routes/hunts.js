@@ -50,7 +50,7 @@ router.post("/", ensureToken, async function (req, res, next) {
 
 router.delete("/", ensureToken, async function (req, res, next) {
   try {
-    const result = await Hunt.findOneAndDelete(req.body.hunt);
+    const result = await Hunt.findOneAndDelete({_id: req.query.huntId});
 
     res.send(`<h1>${result.title} has been deleted from the database!</h1>`);
   } catch (e) {
