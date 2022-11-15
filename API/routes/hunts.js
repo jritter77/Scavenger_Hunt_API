@@ -41,9 +41,9 @@ router.post("/", ensureToken, async function (req, res, next) {
   try {
     const hunt = new Hunt(req.body.hunt);
 
-    await hunt.save();
+    const result = await hunt.save();
 
-    res.send(`<h1>${hunt.title} was added to database!</h1>`);
+    res.send(result);
   } catch (e) {
     console.log(e);
   }

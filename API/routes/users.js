@@ -62,7 +62,7 @@ router.post("/login", async function (req, res, next) {
   try {
     const user = await User.findOne({ username: req.body.username });
 
-    if (user.validPassword(req.body.password)) {
+    if (user && user.validPassword(req.body.password)) {
       const token = jwt.sign({ id: user._id }, process.env.SECRET);
       res.cookie("JWT", token, { httpOnly: true });
       res.send({ id: user._id, username: user.username, token: token });
