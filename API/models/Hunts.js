@@ -9,7 +9,7 @@ const HuntSchema = mongoose.Schema({
 
     clueList: Object,
 
-    ratings: Array,
+    ratings: Object,
     downloads: Number,
 });
 

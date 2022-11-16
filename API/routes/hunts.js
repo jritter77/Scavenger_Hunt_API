@@ -49,6 +49,28 @@ router.post("/", ensureToken, async function (req, res, next) {
   }
 });
 
+router.post("/rating", ensureToken, async function (req, res, next) {
+  try {
+    const hunt = await Hunt.findOne({_id: req.body.huntId});
+
+    if (!hunt.ratings) {
+      hunt.ratings = {};
+    }
+
+    hunt.ratings[req.body.userId] = req.body.rating;
+
+    hunt.markModified('ratings')
+
+    const result = await hunt.save();
+
+    await hunt.markModified('ratings')
+
+    res.send(result);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 router.delete("/", ensureToken, async function (req, res, next) {
   try {
     const result = await Hunt.findOneAndDelete({_id: req.query.huntId});

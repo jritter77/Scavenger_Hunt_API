@@ -57,6 +57,19 @@ router.put("/", ensureToken, async function (req, res, next) {
   }
 });
 
+
+// Edit Current 
+router.put("/changePassword", ensureToken, async function (req, res, next) {
+  try {
+    const user = await User.findOne(req.body.user);
+    user.setPassword(req.body.password);
+    const result = await user.save();
+    res.send(result);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 // Login Route
 router.post("/login", async function (req, res, next) {
   try {
