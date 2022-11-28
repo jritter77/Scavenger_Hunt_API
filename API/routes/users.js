@@ -58,7 +58,7 @@ router.put("/", ensureToken, async function (req, res, next) {
 });
 
 
-// Edit Current 
+// Edit Current users password
 router.put("/changePassword", ensureToken, async function (req, res, next) {
   try {
     const user = await User.findOne(req.body.user);

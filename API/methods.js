@@ -1,9 +1,9 @@
 let jwt = require("jsonwebtoken");
 
+// Security function which forbids access to protected route
+// if not logged in.
 module.exports.ensureToken = function (req, res, next) {
   const JWT = req.cookies.JWT || req.query.JWT;
-
-  console.log(req.query);
 
   if (JWT) {
     jwt.verify(

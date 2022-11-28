@@ -4,6 +4,8 @@ let jwt = require("jsonwebtoken");
 const { ensureToken } = require("../methods");
 const User = require("../models/Users.js");
 
+
+// Returns current users friends list and friend requests
 router.get("/", ensureToken, async function (req, res, next) {
   try {
     const result = await User.findOne(req.body.user, {
@@ -44,6 +46,8 @@ router.post("/", ensureToken, async function (req, res, next) {
   }
 });
 
+
+// accepts friend request and adds sender to current users friend list
 router.put("/accept", ensureToken, async function (req, res, next) {
   try {
     const user = User.findOne(req.body.user);

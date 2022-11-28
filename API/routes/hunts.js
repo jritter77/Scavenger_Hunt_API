@@ -3,7 +3,7 @@ let router = express.Router();
 const { ensureToken } = require("../methods");
 const Hunt = require("../models/Hunts");
 
-/* GET hunt/s */
+/* Gets all hunts fitting search criteria and returns shallow info about each */
 router.get("/", ensureToken, async function (req, res, next) {
   try {
     const searchTerm = req.query.search
@@ -25,11 +25,11 @@ router.get("/", ensureToken, async function (req, res, next) {
   }
 });
 
+
+// Finds specified hunt and returns full hunt info
 router.get("/download", ensureToken, async function (req, res, next) {
   try {
     const found = await Hunt.findOne({ _id: req.query.huntId });
-
-    console.log(found);
 
     res.send(found);
   } catch (e) {
@@ -37,6 +37,7 @@ router.get("/download", ensureToken, async function (req, res, next) {
   }
 });
 
+// Create new hunt with specified attributes contained in 'hunt' in request body object
 router.post("/", ensureToken, async function (req, res, next) {
   try {
     const hunt = new Hunt(req.body.hunt);
@@ -49,6 +50,8 @@ router.post("/", ensureToken, async function (req, res, next) {
   }
 });
 
+
+// Creates a new rating object for specified hunt
 router.post("/rating", ensureToken, async function (req, res, next) {
   try {
     const hunt = await Hunt.findOne({_id: req.body.huntId});
@@ -71,6 +74,7 @@ router.post("/rating", ensureToken, async function (req, res, next) {
   }
 });
 
+// Tries to delete specified hunt 
 router.delete("/", ensureToken, async function (req, res, next) {
   try {
     const result = await Hunt.findOneAndDelete({_id: req.query.huntId});
@@ -81,6 +85,7 @@ router.delete("/", ensureToken, async function (req, res, next) {
   }
 });
 
+// Updates an existing hunt according to specified attributes
 router.put("/", ensureToken, async function (req, res, next) {
   try {
     const result = await Hunt.findOneAndUpdate(req.body.hunt, req.body.attr);
