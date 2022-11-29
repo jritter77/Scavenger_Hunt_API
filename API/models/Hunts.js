@@ -13,7 +13,7 @@ const HuntSchema = mongoose.Schema({
     downloads: Number,
 });
 
-HuntSchema.index({title: 'text', description: 'text'});
+HuntSchema.index({_id: 'text', title: 'text', description: 'text'});
   
 const Hunt = module.exports = mongoose.model('Hunt', HuntSchema);
     

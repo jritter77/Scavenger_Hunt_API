@@ -34,6 +34,7 @@ router.get("/download", ensureToken, async function (req, res, next) {
     res.send(found);
   } catch (e) {
     console.log(e);
+    res.send(false);
   }
 });
 
