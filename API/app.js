@@ -12,7 +12,6 @@ let indexRouter = require("./routes/index");
 let usersRouter = require("./routes/users");
 let huntsRouter = require("./routes/hunts");
 let friendsRouter = require("./routes/friends");
-let groupsRouter = require("./routes/groups");
 
 let app = express();
 
@@ -35,7 +34,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/hunts", huntsRouter);
 app.use("/friends", friendsRouter);
-app.use("/groups", groupsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

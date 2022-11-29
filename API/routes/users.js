@@ -10,7 +10,7 @@ router.get("/", ensureToken, async function (req, res, next) {
   try {
     const users = await User.find(
       { username: req.query.username },
-      { username: 1 }
+      { username: 1, huntHistory: 1 }
     );
 
     res.send(users);
@@ -25,6 +25,14 @@ router.post("/", async function (req, res, next) {
     const user = new User(req.body);
 
     user.setPassword(req.body.password);
+
+    user.huntHistory = {
+      huntsCreated: 0,
+      huntsDownloaded: 0,
+      huntsPlayes: 0,
+      huntsCompleted: 0,
+      huntsPublished: 0
+    }
 
     await user.save();
 
