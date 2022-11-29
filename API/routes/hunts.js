@@ -17,7 +17,9 @@ router.get("/", ensureToken, async function (req, res, next) {
       description: 1,
       ratings: 1,
       downloads: 1,
-    });
+      },
+      {limit: req.query.limit}
+    );
 
     res.send(found);
   } catch (e) {
