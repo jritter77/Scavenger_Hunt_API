@@ -30,12 +30,9 @@ router.post("/", ensureToken, async function (req, res, next) {
       recipient.friendRequests.push({
         _id: sender._id,
         username: sender.username,
-      });
+      })
 
-      const result = await User.findOneAndUpdate(
-        { _id: recipient._id },
-        { friendRequests: recipient.friendRequests }
-      );
+      recipient.save();
 
       res.send("SUCCESS");
     } else {
