@@ -28,8 +28,8 @@ router.post("/", ensureToken, async function (req, res, next) {
     if (recipient) {
       if (
         recipient.friendRequests.find((r) => {
-          console.log(r._id, sender._id);
-          return r._id == sender._id;
+          console.log(r.username, sender.username);
+          return r.username == sender.username;
         })
       ) {
         console.log("Request already exists!");
