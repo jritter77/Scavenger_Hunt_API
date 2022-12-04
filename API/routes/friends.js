@@ -25,6 +25,8 @@ router.post("/", ensureToken, async function (req, res, next) {
     const sender = await User.findOne(req.body.user);
     const recipient = await User.findOne({ username: req.body.receiver });
 
+    console.log("REQ:", req.body, "RECIPIENT:", recipient);
+
     if (recipient) {
       recipient.friendRequests.push({
         _id: sender._id,
