@@ -25,13 +25,11 @@ router.post("/", ensureToken, async function (req, res, next) {
     const sender = await User.findOne(req.body.user);
     const recipient = await User.findOne({ username: req.body.receiver });
 
-    console.log("REQ:", req.body, "RECIPIENT:", recipient);
-
     if (recipient) {
       if (
         recipient.friendRequests.find((r) => {
           console.log(r._id, sender._id);
-          return r._id === sender._id;
+          return r._id == sender._id;
         })
       ) {
         console.log("Request already exists!");
