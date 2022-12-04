@@ -41,7 +41,7 @@ router.post("/", ensureToken, async function (req, res, next) {
 
       recipient.save();
 
-      res.send("SUCCESS");
+      res.send("Friend Request Sent!");
     } else {
       res.send(receiver + "is not a valid user.");
     }
