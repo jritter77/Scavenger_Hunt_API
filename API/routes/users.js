@@ -8,12 +8,12 @@ const User = require("../models/Users");
 // GET user according to query
 router.get("/", ensureToken, async function (req, res, next) {
   try {
-    const users = await User.find(
+    const user = await User.findOne(
       { username: req.query.username },
       { username: 1, huntHistory: 1 }
     );
 
-    res.send(users);
+    res.send(user);
   } catch (e) {
     console.log(e);
   }

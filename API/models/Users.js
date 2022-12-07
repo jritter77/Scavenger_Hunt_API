@@ -25,8 +25,10 @@ UserSchema.methods.changeCredentials = function({username, password}) {
 
 // Accept another user's friend request
 UserSchema.methods.acceptFriendRequest = function(request) {
-    this.friends.push(request.id);
-    this.friendRequests.remove(request);
+    this.friends.push(request.username);
+    const i = this.friendRequests.findIndex((e) => e._id === request._id);
+    this.friendRequests.splice(i, 1);
+    this.save();
 }
 
 // Sets password for current user
