@@ -31,6 +31,13 @@ UserSchema.methods.acceptFriendRequest = function(request) {
     this.save();
 }
 
+// Decline another user's friend request
+UserSchema.methods.declineFriendRequest = function(request) {
+    const i = this.friendRequests.findIndex((e) => e._id === request._id);
+    this.friendRequests.splice(i, 1);
+    this.save();
+}
+
 // Sets password for current user
 UserSchema.methods.setPassword = function(password) {
     this.salt = crypto.randomBytes(16).toString('hex');

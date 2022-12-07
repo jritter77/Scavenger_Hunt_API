@@ -55,10 +55,27 @@ router.post("/", ensureToken, async function (req, res, next) {
 // accepts friend request and adds sender to current users friend list
 router.put("/accept", ensureToken, async function (req, res, next) {
   try {
-    const user =  await User.findOne(req.body.user);
-    user.acceptFriendRequest(req.body.request);
+    const receiver =  await User.findOne(req.body.user);
+    receiver.acceptFriendRequest(req.body.request);
+
+    const sender = await User.findOne({username: req.body.request.username});
+    sender.friends.push(receiver.username);
+    sender.save();
 
     res.send(req.body.request.username + " has been added as a friend!");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+
+// accepts friend request and adds sender to current users friend list
+router.put("/decline", ensureToken, async function (req, res, next) {
+  try {
+    const user =  await User.findOne(req.body.user);
+    user.declineFriendRequest(req.body.request);
+
+    res.send(req.body.request.username + " has been declined as a friend!");
   } catch (e) {
     console.log(e);
   }
