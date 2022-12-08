@@ -29,7 +29,7 @@ router.post("/", async function (req, res, next) {
     user.huntHistory = {
       huntsCreated: 0,
       huntsDownloaded: 0,
-      huntsPlayes: 0,
+      huntsPlayed: 0,
       huntsCompleted: 0,
       huntsPublished: 0
     }
