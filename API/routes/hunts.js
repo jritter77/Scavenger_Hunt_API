@@ -10,15 +10,17 @@ router.get("/", ensureToken, async function (req, res, next) {
       ? { $text: { $search: req.query.search } }
       : {};
 
-    const found = await Hunt.find(searchTerm, {
-      author: 1,
-      authorId: 1,
-      title: 1,
-      description: 1,
-      ratings: 1,
-      downloads: 1,
+    const found = await Hunt.find(
+      searchTerm,
+      {
+        author: 1,
+        authorId: 1,
+        title: 1,
+        description: 1,
+        ratings: 1,
+        downloads: 1,
       },
-      {limit: req.query.limit}
+      { limit: req.query.limit }
     );
 
     res.send(found);
@@ -27,6 +29,26 @@ router.get("/", ensureToken, async function (req, res, next) {
   }
 });
 
+/* Gets all hunts fitting search criteria and returns shallow info about each */
+router.get("/exists", ensureToken, async function (req, res, next) {
+  try {
+    const found = await Hunt.find(
+      { title: req.query.title },
+      {
+        author: 1,
+        authorId: 1,
+        title: 1,
+        description: 1,
+        ratings: 1,
+        downloads: 1,
+      }
+    );
+
+    res.send(found);
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 // Finds specified hunt and returns full hunt info
 router.get("/download", ensureToken, async function (req, res, next) {
@@ -53,11 +75,10 @@ router.post("/", ensureToken, async function (req, res, next) {
   }
 });
 
-
 // Creates a new rating object for specified hunt
 router.post("/rating", ensureToken, async function (req, res, next) {
   try {
-    const hunt = await Hunt.findOne({_id: req.body.huntId});
+    const hunt = await Hunt.findOne({ _id: req.body.huntId });
 
     if (!hunt.ratings) {
       hunt.ratings = {};
@@ -65,11 +86,11 @@ router.post("/rating", ensureToken, async function (req, res, next) {
 
     hunt.ratings[req.body.userId] = req.body.rating;
 
-    hunt.markModified('ratings')
+    hunt.markModified("ratings");
 
     const result = await hunt.save();
 
-    await hunt.markModified('ratings')
+    await hunt.markModified("ratings");
 
     res.send(result);
   } catch (e) {
@@ -77,10 +98,10 @@ router.post("/rating", ensureToken, async function (req, res, next) {
   }
 });
 
-// Tries to delete specified hunt 
+// Tries to delete specified hunt
 router.delete("/", ensureToken, async function (req, res, next) {
   try {
-    const result = await Hunt.findOneAndDelete({_id: req.query.huntId});
+    const result = await Hunt.findOneAndDelete({ _id: req.query.huntId });
 
     res.send(`<h1>${result.title} has been deleted from the database!</h1>`);
   } catch (e) {
