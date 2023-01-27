@@ -4,6 +4,7 @@ let router = express.Router();
 let jwt = require("jsonwebtoken");
 const { ensureToken } = require("../methods");
 const User = require("../models/Users");
+const Users = require("../models/Users");
 
 // GET user according to query
 router.get("/", ensureToken, async function (req, res, next) {
@@ -22,6 +23,10 @@ router.get("/", ensureToken, async function (req, res, next) {
 // Create New User
 router.post("/", async function (req, res, next) {
   try {
+    if ((await User.find({ username: req.body.username })).length !== 0) {
+      throw new Error("Username already exists");
+    }
+
     const user = new User(req.body);
 
     user.setPassword(req.body.password);
@@ -31,14 +36,15 @@ router.post("/", async function (req, res, next) {
       huntsDownloaded: 0,
       huntsPlayed: 0,
       huntsCompleted: 0,
-      huntsPublished: 0
-    }
+      huntsPublished: 0,
+    };
 
     await user.save();
 
-    res.send(`<h1>${user.username} was added to database!</h1>`);
+    res.send(`SUCCESS`);
   } catch (e) {
     console.log(e);
+    res.send(e.message);
   }
 });
 
@@ -64,7 +70,6 @@ router.put("/", ensureToken, async function (req, res, next) {
     console.log(e);
   }
 });
-
 
 // Edit Current users password
 router.put("/changePassword", ensureToken, async function (req, res, next) {
