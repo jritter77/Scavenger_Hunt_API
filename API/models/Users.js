@@ -37,6 +37,13 @@ UserSchema.methods.declineFriendRequest = function (request) {
   this.save();
 };
 
+UserSchema.methods.removeFriend = function (friendName) {
+  console.log(friendName);
+  let i = this.friends.indexOf(friendName);
+  this.friends.splice(i, 1);
+  this.save();
+};
+
 // Sets password for current user
 UserSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString("hex");

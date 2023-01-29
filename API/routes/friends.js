@@ -4,7 +4,6 @@ let jwt = require("jsonwebtoken");
 const { ensureToken } = require("../methods");
 const User = require("../models/Users.js");
 
-
 // Returns current users friends list and friend requests
 router.get("/", ensureToken, async function (req, res, next) {
   try {
@@ -51,14 +50,13 @@ router.post("/", ensureToken, async function (req, res, next) {
   }
 });
 
-
 // accepts friend request and adds sender to current users friend list
 router.put("/accept", ensureToken, async function (req, res, next) {
   try {
-    const receiver =  await User.findOne(req.body.user);
+    const receiver = await User.findOne(req.body.user);
     receiver.acceptFriendRequest(req.body.request);
 
-    const sender = await User.findOne({username: req.body.request.username});
+    const sender = await User.findOne({ username: req.body.request.username });
     sender.friends.push(receiver.username);
     sender.save();
 
@@ -68,14 +66,27 @@ router.put("/accept", ensureToken, async function (req, res, next) {
   }
 });
 
-
-// accepts friend request and adds sender to current users friend list
+// declines friend request
 router.put("/decline", ensureToken, async function (req, res, next) {
   try {
-    const user =  await User.findOne(req.body.user);
+    const user = await User.findOne(req.body.user);
     user.declineFriendRequest(req.body.request);
 
-    res.send(req.body.request.username + " has been declined as a friend!");
+    res.send(req.body.request.username + " has been declined as a friend.");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.put("/remove", ensureToken, async function (req, res, next) {
+  try {
+    const user = await User.findOne(req.body.user);
+    const friend = await User.findOne(req.body.friend);
+
+    user.removeFriend(friend.username);
+    friend.removeFriend(user.username);
+
+    res.send(req.body.friend.username + " has been removed as a friend.");
   } catch (e) {
     console.log(e);
   }
