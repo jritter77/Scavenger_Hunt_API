@@ -32,6 +32,10 @@ router.post("/", ensureToken, async function (req, res, next) {
         console.log("Request already exists!");
         res.send("Request already exists!");
         return;
+      } else if (recipient.friends.find((r) => r === sender.username)) {
+        console.log("You and this user are already friends!");
+        res.send("You and this user are already friends!");
+        return;
       }
 
       recipient.friendRequests.push({
