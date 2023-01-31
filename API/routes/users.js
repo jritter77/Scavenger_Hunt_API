@@ -3,13 +3,12 @@ let cors = require("cors");
 let router = express.Router();
 let jwt = require("jsonwebtoken");
 const { ensureToken } = require("../methods");
-const User = require("../models/Users");
 const Users = require("../models/Users");
 
 // GET user according to query
 router.get("/", ensureToken, async function (req, res, next) {
   try {
-    const user = await User.findOne(
+    const user = await Users.findOne(
       { username: req.query.username },
       { username: 1, huntHistory: 1 }
     );
@@ -23,11 +22,11 @@ router.get("/", ensureToken, async function (req, res, next) {
 // Create New User
 router.post("/", async function (req, res, next) {
   try {
-    if ((await User.find({ username: req.body.username })).length !== 0) {
+    if ((await Users.find({ username: req.body.username })).length !== 0) {
       throw new Error("Username already exists");
     }
 
-    const user = new User(req.body);
+    const user = new Users(req.body);
 
     user.setPassword(req.body.password);
 
@@ -51,7 +50,7 @@ router.post("/", async function (req, res, next) {
 // Delete Current User
 router.delete("/", ensureToken, async function (req, res, next) {
   try {
-    const result = await User.findOneAndDelete(req.body.user);
+    const result = await Users.findOneAndDelete(req.body.user);
 
     res.clearCookie("JWT");
 
@@ -64,7 +63,7 @@ router.delete("/", ensureToken, async function (req, res, next) {
 // Edit Current User
 router.put("/", ensureToken, async function (req, res, next) {
   try {
-    const result = await User.updateOne(req.body.user, req.body.attr);
+    const result = await Users.updateOne(req.body.user, req.body.attr);
     res.send(result);
   } catch (e) {
     console.log(e);
@@ -74,7 +73,7 @@ router.put("/", ensureToken, async function (req, res, next) {
 // Edit Current users password
 router.put("/changePassword", ensureToken, async function (req, res, next) {
   try {
-    const user = await User.findOne(req.body.user);
+    const user = await Users.findOne(req.body.user);
     user.setPassword(req.body.password);
     const result = await user.save();
     res.send(result);
@@ -86,7 +85,7 @@ router.put("/changePassword", ensureToken, async function (req, res, next) {
 // Login Route
 router.post("/login", async function (req, res, next) {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await Users.findOne({ username: req.body.username });
 
     if (user && user.validPassword(req.body.password)) {
       const token = jwt.sign({ id: user._id }, process.env.SECRET);
@@ -96,6 +95,45 @@ router.post("/login", async function (req, res, next) {
       console.log("Invalid Credentials");
       res.send(false);
     }
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// Increments a User's huntsCreated attribute
+router.put("/hunts/created", ensureToken, async function (req, res, next) {
+  try {
+    const user = await Users.findOne(req.body.user);
+
+    await user.incrementCreated();
+
+    res.send("Hunt History Updated");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// Increments a User's huntsPlayed attribute
+router.put("/hunts/played", ensureToken, async function (req, res, next) {
+  try {
+    const user = await Users.findOne(req.body.user);
+
+    await user.incrementPlayed();
+
+    res.send("Hunt History Updated");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+// Increments a User's huntsCompleted attribute
+router.put("/hunts/completed", ensureToken, async function (req, res, next) {
+  try {
+    const user = await Users.findOne(req.body.user);
+
+    await user.incrementCompleted();
+
+    res.send("Hunt History Updated");
   } catch (e) {
     console.log(e);
   }

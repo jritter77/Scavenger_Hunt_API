@@ -2,6 +2,7 @@ let express = require("express");
 let router = express.Router();
 const { ensureToken } = require("../methods");
 const Hunt = require("../models/Hunts");
+const Users = require("../models/Users");
 
 /* Gets all hunts fitting search criteria and returns shallow info about each */
 router.get("/", ensureToken, async function (req, res, next) {
@@ -53,7 +54,10 @@ router.get("/exists", ensureToken, async function (req, res, next) {
 // Finds specified hunt and returns full hunt info
 router.get("/download", ensureToken, async function (req, res, next) {
   try {
+    const user = await Users.findOne(req.body.user);
     const found = await Hunt.findOne({ _id: req.query.huntId });
+
+    await user.incrementDownloaded();
 
     res.send(found);
   } catch (e) {
@@ -65,9 +69,12 @@ router.get("/download", ensureToken, async function (req, res, next) {
 // Create new hunt with specified attributes contained in 'hunt' in request body object
 router.post("/", ensureToken, async function (req, res, next) {
   try {
+    const user = await Users.findOne(req.body.user);
     const hunt = new Hunt(req.body.hunt);
 
     const result = await hunt.save();
+
+    await user.incrementPublished();
 
     res.send(result);
   } catch (e) {

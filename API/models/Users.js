@@ -38,7 +38,6 @@ UserSchema.methods.declineFriendRequest = function (request) {
 };
 
 UserSchema.methods.removeFriend = function (friendName) {
-  console.log(friendName);
   let i = this.friends.indexOf(friendName);
   this.friends.splice(i, 1);
   this.save();
@@ -59,6 +58,36 @@ UserSchema.methods.validPassword = function (password) {
     .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
     .toString(`hex`);
   return this.hash === hash;
+};
+
+UserSchema.methods.incrementCreated = function () {
+  this.huntHistory.huntsCreated += 1;
+  this.markModified("huntHistory");
+  this.save();
+};
+
+UserSchema.methods.incrementDownloaded = function () {
+  this.huntHistory.huntsDownloaded += 1;
+  this.markModified("huntHistory");
+  this.save();
+};
+
+UserSchema.methods.incrementPlayed = function () {
+  this.huntHistory.huntsPlayed += 1;
+  this.markModified("huntHistory");
+  this.save();
+};
+
+UserSchema.methods.incrementCompleted = function () {
+  this.huntHistory.huntsCompleted += 1;
+  this.markModified("huntHistory");
+  this.save();
+};
+
+UserSchema.methods.incrementPublished = function () {
+  this.huntHistory.huntsPublished += 1;
+  this.markModified("huntHistory");
+  this.save();
 };
 
 const User = (module.exports = mongoose.model("User", UserSchema));
