@@ -25,14 +25,20 @@ UserSchema.methods.changeCredentials = function ({ username, password }) {
 // Accept another user's friend request
 UserSchema.methods.acceptFriendRequest = function (request) {
   this.friends.push(request.username);
-  const i = this.friendRequests.findIndex((e) => e._id === request._id);
+  const i = this.friendRequests.findIndex(
+    (e) => e.username === request.username
+  );
   this.friendRequests.splice(i, 1);
   this.save();
 };
 
 // Decline another user's friend request
 UserSchema.methods.declineFriendRequest = function (request) {
-  const i = this.friendRequests.findIndex((e) => e._id === request._id);
+  console.log(this.friendRequests, request);
+  const i = this.friendRequests.findIndex(
+    (e) => e.username === request.username
+  );
+  console.log("Request index: " + i);
   this.friendRequests.splice(i, 1);
   this.save();
 };
