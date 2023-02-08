@@ -1,14 +1,58 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-
-  h2 To open app, open Expo Go app and scan QR Code on the page located at the link below.
-  a(href='https://expo.dev/@jr550/Lookout_Scavenger_Hunt_App?serviceType=classic&distribution=expo-go') QR Code
-
+  header
+    img(src='images/largeIcon.png' width='160' height='160')
+    div
+      h1 Lookout! 
+      p Scavenger Hunt App
   
+  div(id='container')
+    section
+    
+      div(id='screenshot_viewer')
 
+      div(class='bubble') 
+        h2 About: 
+        p. 
+          Lookout is an app for making, sharing, and participating in scavenger hunts! 
+        p. 
+          Lookout started as a school project to create a scavenger hunt app 
+          that could be used by new students during orientation to familiarize themselves with the campus. 
+        p. 
+          However we wanted Lookout to be used by anyone 
+          so we have released a version compatible with Expo Go, and are currently working on releasing the app on the Google Play Store as well!
 
-  
+      div(class='bubble') 
+        h2 Features:
+        ul 
+          li Participate in user created scavenger hunts!
+          li Create your own scavenger hunts!
+          li Share your created hunts with other users!
 
+    section
+      div(class='bubble') 
+        h1 How to get the app: 
+
+        h2 Open with Expo Go: 
+        ol 
+          li Download Expo Go from play store on your mobile device.
+          li Navigate to the 
+            a(href='https://expo.dev/@jr550/Lookout_Scavenger_Hunt_App?serviceType=classic&distribution=expo-go' target='_blank') project page
+          li Tap the "Open in Expo Go" button on the project page.
+          li When opening Expo Go again, the app should appear under the "Recently opened" section. Tap this to re-launch the app.
+        
+        h2 Download from Google Play Store: 
+        p Coming Soon!
+
+      div(class='bubble') 
+        h2 Developers: 
+        ul 
+          li Jake Ritter 
+          li Antonio Quintanilla 
+          li Jordan Urbany 
+
+  footer 
+    p Copyright - 2023
+
+  script(src="javascripts/ScreenshotViewer.js"); 
